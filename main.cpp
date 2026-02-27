@@ -41,7 +41,7 @@ int main(int argc, char** argv){
     double movieRating;
     // Read each file and store the name and rating
     while (getline (movieFile, line) && parseLine(line, movieName, movieRating)){
-        allMovies.pushback({movieName, movieRating});
+        allMovies.push_back({movieName, movieRating});
     }
 
     movieFile.close();
@@ -79,7 +79,7 @@ int main(int argc, char** argv){
 
     for (const string& pre : prefixes) {
         // Finding the strat of the prefix range using binary search
-        auto it = lower_bound(allMovies.begin(), allMobies.end(), Movie{pre, 0.0});
+        auto it = lower_bound(allMovies.begin(), allMovies.end(), Movie{pre, 0.0});
 
         vector<Movie> matches;
         // Collect all the movies that satisfy the prefix
@@ -88,7 +88,7 @@ int main(int argc, char** argv){
             ++it;
         } 
 
-        if (matches.epmty()) {
+        if (matches.empty()) {
             cout << "No movies found with prefix " << pre << endl;
             summary.push_back({pre, "", 0.0, false});
         } else {
