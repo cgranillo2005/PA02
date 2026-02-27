@@ -8,7 +8,7 @@ struct Movie {
     double rating;
 
     // Part 1
-    bool opereator<(const Movie& other) const {
+    bool operator<(const Movie& other) const {
         return name < other.name;
     }
 };
