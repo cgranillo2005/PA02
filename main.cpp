@@ -109,8 +109,7 @@ int main(int argc, char** argv){
         }
     }
 
-    return 0;
-}
+
     //  For each prefix,
     //  Find all movies that have that prefix and store them in an appropriate data structure
     //  If no movie with that prefix exists print the following message
