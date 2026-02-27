@@ -55,8 +55,8 @@ int main(int argc, char** argv){
             return 0;
     }
 
-    ifstream prefixFile (argv[2]);
 
+    ifstream prefixFile (argv[2]);
     if (prefixFile.fail()) {
         cerr << "Could not open file " << argv[2];
         exit(1);
@@ -75,6 +75,7 @@ int main(int argc, char** argv){
         double rating;
         bool found;
     };
+
     vector<BestTracker> summary;
 
     for (const string& pre : prefixes) {
@@ -90,7 +91,6 @@ int main(int argc, char** argv){
 
         if (matches.empty()) {
             cout << "No movies found with prefix " << pre << endl;
-            summary.push_back({pre, "", 0.0, false});
         } else {
             sort(matches.begin(), matches.end(), compareByRating);
 
@@ -105,11 +105,12 @@ int main(int argc, char** argv){
 
     for (const auto& item: summary) {
         if (item.found) {
-            cout << "Best mobie with prefix " << item.prefix << " is: " << item.movieName << " with rating " << fixed << setprecision(1) << item.rating << endl;
+            cout << "Best movie with prefix " << item.prefix << " is: " << item.movieName << " with rating " << fixed << setprecision(1) << item.rating << endl;
         }
     }
 
     return 0;
+}
     //  For each prefix,
     //  Find all movies that have that prefix and store them in an appropriate data structure
     //  If no movie with that prefix exists print the following message
