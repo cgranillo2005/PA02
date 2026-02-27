@@ -1,6 +1,7 @@
-// Winter'24
+// Winter'25
 // Instructor: Diba Mirza
-// Student name: 
+// Student name: Carlos Granillo, Luke Nguyen
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -34,22 +35,23 @@ int main(int argc, char** argv){
         exit(1);
     }
   
-    // Create an object of a STL data-structure to store all the movies
+    vector<Movie> allMovies;
 
     string line, movieName;
     double movieRating;
     // Read each file and store the name and rating
     while (getline (movieFile, line) && parseLine(line, movieName, movieRating)){
-            // Use std::string movieName and double movieRating
-            // to construct your Movie objects
-            // cout << movieName << " has rating " << movieRating << endl;
-            // insert elements into your data structure
+        allMovies.pushback({movieName, movieRating});
     }
 
     movieFile.close();
 
+    sort(allMovies.begin(), allMovies.end());
+
     if (argc == 2){
-            //print all the movies in ascending alphabetical order of movie names
+            for (const auto& m: allMovies) {
+                cout << m.name << ", " << fixed << setprecision(1) << m.rating << endl;
+            }
             return 0;
     }
 
@@ -67,6 +69,47 @@ int main(int argc, char** argv){
         }
     }
 
+    struct BestTracker {
+        string prefix;
+        string movieName;
+        double rating;
+        bool found;
+    };
+    vector<BestTracker> summary;
+
+    for (const string& pre : prefixes) {
+        // Finding the strat of the prefix range using binary search
+        auto it = lower_bound(allMovies.begin(), allMobies.end(), Movie{pre, 0.0});
+
+        vector<Movie> matches;
+        // Collect all the movies that satisfy the prefix
+        while (it != allMovies.end() && it->name.compare(0, pre.length(), pre) == 0) {
+            matches.push_back(*it);
+            ++it;
+        } 
+
+        if (matches.epmty()) {
+            cout << "No movies found with prefix " << pre << endl;
+            summary.push_back({pre, "", 0.0, false});
+        } else {
+            sort(matches.begin(), matches.end(), compareByRating);
+
+            for (const auto& m : matches) {
+                cout << m.name << ", " << fixed << setprecision(1) << m.rating << endl;
+            }
+            cout << endl;
+
+            summary.push_back({pre, matches[0].name, matches[0].rating, true});
+        }
+    }
+
+    for (const auto& item: summary) {
+        if (item.found) {
+            cout << "Best mobie with prefix " << item.prefix << " is: " << item.movieName << " with rating " << fixed << setprecision(1) << item.rating << endl;
+        }
+    }
+
+    return 0;
     //  For each prefix,
     //  Find all movies that have that prefix and store them in an appropriate data structure
     //  If no movie with that prefix exists print the following message
@@ -79,7 +122,14 @@ int main(int argc, char** argv){
     return 0;
 }
 
-/* Add your run time analysis for part 3 of the assignment here as commented block*/
+/*
+Time Complexity Analysis
+Let:
+- n = total number of movies in the dataset
+- m = the number of prefixes to search
+- k = max num of movies that start with a given prefix
+- l - max length of a movie name
+*/
 
 bool parseLine(string &line, string &movieName, double &movieRating) {
     int commaIndex = line.find_last_of(",");
