@@ -112,13 +112,30 @@ int main(int argc, char** argv){
     return 0;
 }
 
-/*
-Time Complexity Analysis
+/* Complexity analysis
+3a: Time Complexity Analysis
 Let:
 - n = total number of movies in the dataset
 - m = the number of prefixes to search
 - k = max num of movies that start with a given prefix
 - l - max length of a movie name
+
+Our part 2 algorithm does a couple things for each of the 'm' prefizes
+1. It does a search using std::lower_bound. This search is over 'n' elements, which takes about O(l) time, so in total takes O(l * log n) time
+2. Then it has to go through 'k' matches in order to collect all the matches which takes O(k * l) time
+3. After that it sorts using std::sort to sort 'k' elements which takes O (l * k * log k) time
+4. It finally prints everything which takes O(k * l) time.
+Therefore the final time complexity for part 2 is O(m * l * (log n + k * logk))
+
+- 3b: Space complexity analysis
+- The allMovies data structure stores 'n' movies with each moving hacing a length of 'l', therefore it uses a O(n * l) space.
+- The prefixes list stroes 'm' strings. Each string also has a length of 'l' so it uses O(m * l) space.
+- The matches list stores at most 'k' movies with each movie hacing a length of l giing a O(k * l) space
+- The 'summary' list stores 'm' results, each result has a length of 'l' giving a space complexity of O(m * l)
+This gives us a total space complexity of O(l*(n + m))
+
+3c: Time and space complexity tradeoffs
+This algorithm was designed for performance, which made me focus on a low time complexity. By using a list and fast search method, this gives us efficient lookup times. This additionally keeps the data close in memery which allows for faster times than using data structures. While this approach is fast, it also is memory efficient, as it stores all the data in one list, avoiding the use of memory by other data structures. However the difficulty of this was ensuring the sorting by rating did not degrade the performance of the other searches, such as alphabetical
 */
 
 bool parseLine(string &line, string &movieName, double &movieRating) {
